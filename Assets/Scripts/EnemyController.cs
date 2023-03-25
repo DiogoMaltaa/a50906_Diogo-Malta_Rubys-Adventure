@@ -12,7 +12,7 @@ public class EnemyController : MonoBehaviour
     float timer;
     int direction = 1;
 
-
+    bool broken = true;
     Animator anim;
     void Start()
     {
@@ -29,6 +29,11 @@ public class EnemyController : MonoBehaviour
         {
             direction = -direction;
             timer = changeTime;
+        }
+
+        if (!broken)
+        {
+            return;
         }
     }
 
@@ -48,6 +53,11 @@ public class EnemyController : MonoBehaviour
             anim.SetFloat("Move Y", 0);
             position.x = position.x + Time.deltaTime * speed * direction;
         }
+
+        if (!broken)
+        {
+            return;
+        }
         
 
         rb.MovePosition(position);
@@ -61,5 +71,12 @@ public class EnemyController : MonoBehaviour
         {
             player.ChangeHealth(-1);
         }
+    }
+
+    public void Fix()
+    {
+        broken = false;
+        rb.simulated = false;
+        anim.SetTrigger("Fixed");
     }
 }
